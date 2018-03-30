@@ -1,0 +1,11 @@
+security:
+    firewalls:
+        rsa_secured:
+            pattern:   ^/
+            rsa_auth:  true
+            logout:
+                path: /arena-auth-logout
+                success_handler: neevalt.arena-auth-bundle.logout_handler
+    providers:
+        main:
+            id: neevalt.arena-auth-bundle.user_provider

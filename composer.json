@@ -1,0 +1,29 @@
+{
+    "name": "neevalt/arena-auth-bundle",
+    "description": "Authentication bundle for Arena",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Neevalt",
+            "email": "neevalt@gmail.com"
+        }
+    ],
+    "keywords": [
+        "authentication", "arena"
+    ],
+    "license": "proprietary",
+    "require": {
+        "php": "^7.1.3",
+        "symfony/security-bundle": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Neevalt\\ArenaAuthBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
