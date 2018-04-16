@@ -19,6 +19,7 @@ services:
     neevalt.arena-auth-bundle.user_provider:
         class: Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUserProvider
         arguments:
+            $userClass: '%neevalt.arena-auth-bundle.user_class%'
             $refreshUser: '%neevalt.arena-auth-bundle.refresh_user%'
 
     Neevalt\ArenaAuthBundle\Security\Authentication\Provider\ArenaAuthProvider: ~

@@ -18,6 +18,10 @@ class ArenaAuthUserProvider implements UserProviderInterface
      */
     private $rsaService;
     /**
+     * @var string
+     */
+    private $userClass;
+    /**
      * @var bool
      */
     private $refreshUser;
@@ -27,12 +31,17 @@ class ArenaAuthUserProvider implements UserProviderInterface
      *
      * @param ArenaAuthUserLoaderInterface $userLoader
      * @param RsaService                   $rsaService
+     * @param string                       $refreshUser
      * @param bool                         $refreshUser
      */
-    public function __construct(ArenaAuthUserLoaderInterface $userLoader, RsaService $rsaService, bool $refreshUser)
+    public function __construct(ArenaAuthUserLoaderInterface $userLoader,
+                                RsaService $rsaService,
+                                string $userClass,
+                                bool $refreshUser)
     {
         $this->userLoader = $userLoader;
         $this->rsaService = $rsaService;
+        $this->userClass = $userClass;
         $this->refreshUser = $refreshUser;
     }
 
@@ -41,7 +50,7 @@ class ArenaAuthUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->initUser(new ArenaAuthUser($username));
+        $user = $this->initUser(new $this->userClass($username));
 
         return $this->userLoader->loadUser($user);
     }
@@ -69,7 +78,7 @@ class ArenaAuthUserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return 'Neevalt\AuthBundle\Security\User\User' === $class;
+        return $this->userClass === $class;
     }
 
     /**

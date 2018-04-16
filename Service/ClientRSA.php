@@ -102,7 +102,6 @@ class ClientRSA
         $this->aHeaderHTTP = [];
         $this->aHeaderClientRSA = [];
         $this->initHeaderClient();
-        $this->isInit = true;
 
         // Récupération Provenance Utilisateur
         isset($_SERVER['HTTP_REFERER']) ? $this->aHeaderClientRSA['portail'] = $_SERVER['HTTP_REFERER'] : $this->aHeaderClientRSA['portail'] = '';
@@ -124,6 +123,7 @@ class ClientRSA
             // Composant Non Activé => Création du HeaderClient à  partir du HeaderHTTP
             $this->setHeaderClientFromHTTP();
         }
+        $this->isInit = true;
     }
 
     // Retourne le tableau du Header HTTP

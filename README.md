@@ -46,6 +46,7 @@ arena_auth:
     is_client_rsa: false
     redirect_logout: https://externet.ac-creteil.fr/arena/pages/accueil.jsf
     is_strict_redirect: false
+    user_class: Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUser
     refresh_user: '%kernel.debug%'
 ```
 
@@ -71,6 +72,9 @@ l'attribution des rôles, en plus de la stocker en session sous le nom `"clientR
 * `redirect_logout` est l'url à utiliser dans le cas où aucune url de déconnexion n'a été trouvée.
 
 * `is_strict_redirect` force l'url de déconnexion à prendre la valeur de `redirect_logout`.
+
+* `user_class` est la classe correspondant à l'utilisateur à authentifier. Ce paramètre permet d'étendre la classe de
+base pour y ajouter des membres par exemple.
 
 * `refresh_user` détermine si le token d'authentification doit mettre à jour les rôles de l'utilisateur ou non.
 Typiquement, si la gestion de vos rôles est lourde (comme pour un appel en base de données), il vaut mieux passer cette
@@ -108,7 +112,7 @@ class MyCustomUserLoader implements ArenaAuthUserLoaderInterface
     
     public function loadUser(ArenaAuthUser $user): ArenaAuthUser
     {
-        // (ArenaAuthUser::DEFAULT_USERNAME !== $user->getUsername()) === %is_client_rsa%
+        // vaut le paramètre is_client_rsa
         if (ArenaAuthUser::DEFAULT_USERNAME !== $user->getUsername()) {
             if ($user->isGroupeAppartenance('appli_admin')) {
                 $user->addRole('ROLE_ADMIN');
