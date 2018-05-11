@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
             ->cannotBeEmpty()
             ->end()
             ->scalarNode('user_loader_id')
-            ->defaultValue('Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUserLoader')
+            ->defaultValue('neevalt.arena-auth-bundle.arena_auth_user_loader')
             ->cannotBeEmpty()
             ->end()
             ->booleanNode('is_client_rsa')

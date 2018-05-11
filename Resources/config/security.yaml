@@ -5,7 +5,7 @@ security:
             rsa_auth:  true
             logout:
                 path: /arena-auth-logout
-                success_handler: neevalt.arena-auth-bundle.logout_handler
+                success_handler: neevalt.arena-auth-bundle.arena_auth_logout_handler
     providers:
         main:
-            id: neevalt.arena-auth-bundle.user_provider
+            id: neevalt.arena-auth-bundle.arena_auth_user_provider

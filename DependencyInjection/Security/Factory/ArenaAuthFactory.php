@@ -2,8 +2,6 @@
 
 namespace Neevalt\ArenaAuthBundle\DependencyInjection\Security\Factory;
 
-use Neevalt\ArenaAuthBundle\Security\Authentication\Provider\ArenaAuthProvider;
-use Neevalt\ArenaAuthBundle\Security\Firewall\ArenaAuthListener;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -19,12 +17,12 @@ class ArenaAuthFactory implements SecurityFactoryInterface
     {
         $providerId = 'security.authentication.provider.'.$id;
         $container
-            ->setDefinition($providerId, new ChildDefinition(ArenaAuthProvider::class))
+            ->setDefinition($providerId, new ChildDefinition('neevalt.arena-auth-bundle.arena_auth_provider'))
             ->replaceArgument('$userProvider', new Reference($userProvider))
         ;
 
         $listenerId = "security.authentication.listener.${id}";
-        $container->setDefinition($listenerId, new ChildDefinition(ArenaAuthListener::class));
+        $container->setDefinition($listenerId, new ChildDefinition('neevalt.arena-auth-bundle.arena_auth_listener'));
 
         return [$providerId, $listenerId, $defaultEntryPoint];
     }

@@ -1,36 +1,45 @@
 services:
     _defaults:
         public: false
-        autowire: true
+        autowire: false
 
-    Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUserLoader:
+    neevalt.arena-auth-bundle.arena_auth_user_loader:
+        class: Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUserLoader
         arguments:
             $roles: '%neevalt.arena-auth-bundle.roles%'
 
-    Neevalt\ArenaAuthBundle\Service\ClientRSA:
+    neevalt.arena-auth-bundle.client_rsa:
+        class: Neevalt\ArenaAuthBundle\Service\ClientRSA
         arguments:
             $appNom: '%neevalt.arena-auth-bundle.app_nom%'
 
-    Neevalt\ArenaAuthBundle\Service\RsaService:
+    neevalt.arena-auth-bundle.rsa_service:
+        class: Neevalt\ArenaAuthBundle\Service\RsaService
         arguments:
+            $clientRSA: '@neevalt.arena-auth-bundle.client_rsa'
             $isClientRSA: '%neevalt.arena-auth-bundle.is_client_rsa%'
             $wsdlUrl: '%neevalt.arena-auth-bundle.wsdlurl%'
 
-    neevalt.arena-auth-bundle.user_provider:
+    neevalt.arena-auth-bundle.arena_auth_user_provider:
         class: Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUserProvider
         arguments:
+            $rsaService: '@neevalt.arena-auth-bundle.rsa_service'
             $userClass: '%neevalt.arena-auth-bundle.user_class%'
             $refreshUser: '%neevalt.arena-auth-bundle.refresh_user%'
 
-    Neevalt\ArenaAuthBundle\Security\Authentication\Provider\ArenaAuthProvider: ~
+    neevalt.arena-auth-bundle.arena_auth_provider:
+        class: Neevalt\ArenaAuthBundle\Security\Authentication\Provider\ArenaAuthProvider
 
-    Neevalt\ArenaAuthBundle\Security\Firewall\ArenaAuthListener:
-        $tokenStorage: '@security.token_storage'
-        $authenticationManager: '@security.authentication.manager'
-        $refreshUser: '%neevalt.arena-auth-bundle.refresh_user%'
+    neevalt.arena-auth-bundle.arena_auth_listener:
+        class: Neevalt\ArenaAuthBundle\Security\Firewall\ArenaAuthListener
+        arguments:
+            $tokenStorage: '@security.token_storage'
+            $authenticationManager: '@security.authentication.manager'
+            $refreshUser: '%neevalt.arena-auth-bundle.refresh_user%'
 
-    neevalt.arena-auth-bundle.logout_handler:
+    neevalt.arena-auth-bundle.arena_auth_logout_handler:
         class: Neevalt\ArenaAuthBundle\Security\Logout\ArenaAuthLogoutHandler
         arguments:
             $isStrictRedirect: '%neevalt.arena-auth-bundle.is_strict_redirect%'
             $redirectLogout: '%neevalt.arena-auth-bundle.redirect_logout%'
+            $tokenStorage: '@security.token_storage'

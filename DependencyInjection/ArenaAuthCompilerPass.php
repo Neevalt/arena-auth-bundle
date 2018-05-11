@@ -14,7 +14,7 @@ class ArenaAuthCompilerPass implements CompilerPassInterface
     {
         $className = $container->getParameter('neevalt.arena-auth-bundle.user_loader_id');
         $def = $container->findDefinition($className);
-        $definition = $container->findDefinition('neevalt.arena-auth-bundle.user_provider');
+        $definition = $container->findDefinition('neevalt.arena-auth-bundle.arena_auth_user_provider');
         $definition->setArgument('$userLoader', $def);
     }
 }

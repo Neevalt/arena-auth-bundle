@@ -48,10 +48,9 @@ class ArenaAuthLogoutHandler implements LogoutSuccessHandlerInterface
         } else {
             $redirect = $user->getOrigine();
         }
-        if (preg_match('#(.*)\\/login.*#i', $redirect, $var)) {
-            $redirect = $var[1];
+        if (preg_match('#((.*).fr).*#i', $redirect, $var)) {
+            $redirect = $var[2];
         }
-
         return new RedirectResponse($redirect);
     }
 }
