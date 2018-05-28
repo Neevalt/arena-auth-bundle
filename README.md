@@ -1,16 +1,16 @@
 Bundle d'authentification Arena
 ===============================
 
-<span id="prerequis">Prérequis</span>
--------------------------------------
+Prérequis
+---------
 
 * Composer
 * Php >= 7.1.3
 
 Ce bundle a été testé avec la version 4 de Symfony.
 
-<span id="installer-le-bundle">Installer le bundle</span>
----------------------------------------------------------
+Installer le bundle
+-------------------
 
 Depuis la console, 
 
@@ -18,10 +18,10 @@ Depuis la console,
 composer require neevalt/arena-auth-bundle
 ```
 
-<span id="activer-et-configurer-le-bundle">Activer et configurer le bundle</span>
----------------------------------------------------------------------------------
+Activer et configurer le bundle
+-------------------------------
 
-### <span id="activer-le-bundle">Activer le bundle</span>
+### Activer le bundle
 
 Grâce à Symfony Flex, le bundle est activé automatiquement.  Pour en bénéficier, il faut activer les paramètres de
 sécurité dans `config/security.yaml`. Supprimez les paramètres de sécurité par défaut et 
@@ -32,7 +32,7 @@ imports:
     - { resource: "@ArenaAuthBundle/Resources/config/security.yaml" }
 ```
 
-### <span id="configurer-le-bundle"> Configurer le bundle</span>
+### Configurer le bundle
 
 Pour configurer le bundle, créez le fichier `config/packages/arena_auth.yaml`.
 La structure de ce fichier doit respecter la suivante :
@@ -44,8 +44,7 @@ arena_auth:
     roles: [ROLE_GEST]
     user_loader_id: Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUserLoader
     is_client_rsa: false
-    redirect_logout: https://externet.ac-creteil.fr/arena/pages/accueil.jsf
-    is_strict_redirect: false
+    redirect_logout: ~
     user_class: Neevalt\ArenaAuthBundle\Security\User\ArenaAuthUser
     refresh_user: '%kernel.debug%'
 ```
@@ -69,9 +68,7 @@ variable à `false`. Par défaut, un utilisateur avec le nom défini dans `usern
 sera simulé. Mettre cette variable à `true` permettra l'accès à une instance de la classe `ClientRSA` au moment de 
 l'attribution des rôles, en plus de la stocker en session sous le nom `"clientRSA"`.
 
-* `redirect_logout` est l'url à utiliser dans le cas où aucune url de déconnexion n'a été trouvée.
-
-* `is_strict_redirect` force l'url de déconnexion à prendre la valeur de `redirect_logout`.
+* `redirect_logout` est à renseigner si vous ne souhaitez pas rediriger vers le nom de domaine lors de la déconnexion.
 
 * `user_class` est la classe correspondant à l'utilisateur à authentifier. Ce paramètre permet d'étendre la classe de
 base pour y ajouter des membres par exemple.
@@ -84,8 +81,8 @@ Typiquement, si la gestion de vos rôles est lourde (comme pour un appel en base
 Il est à noter que le changement de ces paramètres ne sera pas forcément affiché dans
 la toolbar Symfony, mais il sera néanmoins effectif.
 
-<span id="gerer-l-authentification">Gérer l'authentification</span>
--------------------------------------------------------------------
+Gérer l'authentification
+------------------------
 
 Pour modifier le comportement par défaut du bundle et attribuer soi même les différents rôles aux utilisateurs, il faut
  spécifier la logique d'authentification dans une classe qui sera utilisée par le bundle.
@@ -105,6 +102,7 @@ class MyCustomUserLoader implements ArenaAuthUserLoaderInterface
 {
     private $logger;
     
+    // On peut par exempler injecter le Logger ici.
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -156,14 +154,10 @@ security:
         ROLE_ADMIN: [ROLE_ADSI, ROLE_DEV]
 ```
 
-Si vous avez activé la toolbar, elle devrait vous indiquer quelque chose comme cela :
+Si vous avez activé la toolbar, elle devrait vous indiquer l'utilisateur authentifié.
 
-![alt text](https://puu.sh/yFBr9/9602f3e546.png "Succes authentification")
-
-qui indique que l'utilisateur "logintest" est bien authentifié. Vous verrez son rôle en cliquant dessus.
-
-<span id="gerer-la-deconnexion">Gérer la déconnexion</span>
------------------------------------------------------------
+Gérer la déconnexion
+--------------------
 
 Le bundle permet d'avoir accès à une route de déconnexion, qui détruit la session et redirige vers Arena.
 Pour l'activer, il faut simplement importer le fichier de routing dans `config/routes.yaml` :
@@ -178,5 +172,3 @@ On peut ensuite se servir d'une route appelée `arena_auth_logout` :
 ```twig
 <a href="{{ path('arena_auth_logout') }}">Déconnexion</a>
 ```
-
-Lorsque `is_client_rsa` est défini à `false`, cette route redirigera vers Externet.

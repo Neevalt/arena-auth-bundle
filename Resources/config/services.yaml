@@ -40,6 +40,4 @@ services:
     neevalt.arena-auth-bundle.arena_auth_logout_handler:
         class: Neevalt\ArenaAuthBundle\Security\Logout\ArenaAuthLogoutHandler
         arguments:
-            $isStrictRedirect: '%neevalt.arena-auth-bundle.is_strict_redirect%'
             $redirectLogout: '%neevalt.arena-auth-bundle.redirect_logout%'
-            $tokenStorage: '@security.token_storage'
