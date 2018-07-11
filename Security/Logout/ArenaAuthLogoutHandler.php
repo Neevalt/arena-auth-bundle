@@ -30,10 +30,8 @@ class ArenaAuthLogoutHandler implements LogoutSuccessHandlerInterface
     {
         if (null !== $this->redirectLogout) {
             $redirect = $this->redirectLogout;
-        } elseif (preg_match('#(.*\.fr).*#i', $request->getUri(), $var)) {
-            $redirect = $var[0];
         } else {
-            $redirect = 'https://externet.ac-creteil.fr';
+            $redirect = '/';
         }
         return new RedirectResponse($redirect);
     }
